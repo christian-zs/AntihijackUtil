@@ -13,4 +13,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+
+    <string name="activity_safe_warning">已切换至后台运行！</string>
 </resources>
