@@ -54,17 +54,23 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        // 白名单
-        boolean safe = AntiHijackingUtil.checkActivity(this);
-        // 系统桌面
-        boolean isHome = AntiHijackingUtil.isHome(this);
-        // 锁屏操作
-        boolean isReflectScreen = AntiHijackingUtil.isReflectScreen(this);
-        // 判断程序是否当前显示
-        if (!safe && !isHome && !isReflectScreen) {
-            Toast.makeText(getApplicationContext(), R.string.activity_safe_warning,
-                    Toast.LENGTH_LONG).show();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 白名单
+                boolean safe = AntiHijackingUtil.checkActivity(getApplicationContext());
+                // 系统桌面
+                boolean isHome = AntiHijackingUtil.isHome(getApplicationContext());
+                // 锁屏操作
+                boolean isReflectScreen = AntiHijackingUtil.isReflectScreen(getApplicationContext());
+                // 判断程序是否当前显示
+                if (!safe && !isHome && !isReflectScreen) {
+                    Toast.makeText(getApplicationContext(), R.string.activity_safe_warning,
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }).start();
+
     }
 
     /**

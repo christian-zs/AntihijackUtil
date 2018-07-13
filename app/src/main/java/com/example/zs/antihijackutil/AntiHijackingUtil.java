@@ -20,36 +20,21 @@ import java.util.List;
  */
 public class AntiHijackingUtil {
     public static final String TAG = "AntiHijackingUtil";
-    // 白名单列表
-    private static List<String> safePackages;
-
-    static {
-        safePackages = new ArrayList<String>();
-    }
-
-    public static void configSafePackages(List<String> packages) {
-        return;
-    }
-
-    private static PackageManager pm;
-    private List<ApplicationInfo> mlistAppInfo;
-
 
     /**
      * 检测当前Activity是否安全
      */
     public static boolean checkActivity(Context context) {
         boolean safe = false;
-        pm = context.getPackageManager();
+        PackageManager pm = context.getPackageManager();
         // 查询所有已经安装的应用程序
         List<ApplicationInfo> listAppcations =
                 pm.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
         Collections.sort(listAppcations, new ApplicationInfo.DisplayNameComparator(pm));// 排序
-        List<ApplicationInfo> appInfos = new ArrayList<ApplicationInfo>(); // 保存过滤查到的AppInfo
-        // appInfos.clear();
+
+         List<String> safePackages =new ArrayList<>();
         for (ApplicationInfo app : listAppcations) {// 这个排序必须有.
             if ((app.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-                // appInfos.add(getAppInfo(app));
                 safePackages.add(app.packageName);
             }
         }
