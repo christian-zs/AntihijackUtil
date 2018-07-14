@@ -1,6 +1,7 @@
 package com.example.zs.antihijackutil;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -65,8 +66,10 @@ public class LoginActivity extends AppCompatActivity {
                 boolean isReflectScreen = AntiHijackingUtil.isReflectScreen(getApplicationContext());
                 // 判断程序是否当前显示
                 if (!safe && !isHome && !isReflectScreen) {
+                    Looper.prepare();
                     Toast.makeText(getApplicationContext(), R.string.activity_safe_warning,
                             Toast.LENGTH_LONG).show();
+                    Looper.loop();
                 }
             }
         }).start();
