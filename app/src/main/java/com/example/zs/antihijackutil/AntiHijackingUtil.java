@@ -25,14 +25,13 @@ public class AntiHijackingUtil {
      * 检测当前Activity是否安全
      */
     public static boolean checkActivity(Context context) {
-        boolean safe = false;
         PackageManager pm = context.getPackageManager();
         // 查询所有已经安装的应用程序
         List<ApplicationInfo> listAppcations =
                 pm.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
         Collections.sort(listAppcations, new ApplicationInfo.DisplayNameComparator(pm));// 排序
 
-         List<String> safePackages =new ArrayList<>();
+        List<String> safePackages = new ArrayList<>();
         for (ApplicationInfo app : listAppcations) {// 这个排序必须有.
             if ((app.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
                 safePackages.add(app.packageName);
@@ -58,16 +57,16 @@ public class AntiHijackingUtil {
         if (runningActivityPackageName != null) {
             // 有些情况下在5x的手机中可能获取不到当前运行的包名，所以要非空判断。
             if (runningActivityPackageName.equals(context.getPackageName())) {
-                safe = true;
+                return true;
             }
             // 白名单比对
             for (String safePack : safePackages) {
                 if (safePack.equals(runningActivityPackageName)) {
-                    safe = true;
+                    return true;
                 }
             }
         }
-        return safe;
+        return false;
     }
 
     private static String getCurrentPkgName(Context context) {
